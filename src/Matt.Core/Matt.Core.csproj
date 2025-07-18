@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<RootNamespace>Matt</RootNamespace>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<Platforms>AnyCPU;x64;x86</Platforms>
+		<OutputPath>$(SolutionDir)\bin\$(Platform)</OutputPath>
+	</PropertyGroup>
+
+</Project>
