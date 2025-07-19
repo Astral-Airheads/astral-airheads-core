@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Matt.Logging;
 
-public class Logger : ILogger
+public class Logger(bool closeWriterOnDispose = false) : ILogger
 {
     private bool _disposed;
 
@@ -137,7 +137,8 @@ public class Logger : ILogger
         {
             if (disposing)
             {
-                OutputWriter.Close();
+                if (closeWriterOnDispose)
+                    OutputWriter.Close();
             }
             
             _disposed = true;
