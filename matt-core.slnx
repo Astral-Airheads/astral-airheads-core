@@ -7,4 +7,7 @@
 	<Folder Name="/Main/">
 		<Project Path="src/Matt.Core/project/Matt.Core.csproj" />
 	</Folder>
+	<Folder Name="/Tests/">
+		<Project Path="src/Matt.Core/tests/Matt.Core.Tests.csproj" />
+	</Folder>
 </Solution>
