@@ -11,6 +11,7 @@ public class Logger(bool closeWriterOnDispose = false) : ILogger
     private bool _disposed;
 
     public TextWriter OutputWriter => Console.Out;
+	public TextWriter ErrWriter => Console.Error;
 
     public void LogDebug(string message) => Log(MessageLevel.Debug, message);
     public void LogDebug([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format, params object?[] args) =>
@@ -96,12 +97,23 @@ public class Logger(bool closeWriterOnDispose = false) : ILogger
         var file = Path.GetFileName(frame?.GetFileName()) ?? "unknown file";
         var line = frame?.GetFileLineNumber() ?? 0;
 
-        if (level == MessageLevel.Debug)
+        switch (level)
+		{
+		case MessageLevel.Debug:
             Debug.WriteLine(FormatMessage(level, DateTime.Now,
             file, line, message));
-        else
+			break;
+		case MessageLevel.Err:
+		case MessageLevel.Crit:
+		case MessageLevel.Fatal:
+            ErrWriter.WriteLine(FormatMessage(level, DateTime.Now,
+            file, line, message));
+			break;
+		default:
             OutputWriter.WriteLine(FormatMessage(level, DateTime.Now,
             file, line, message));
+			break;
+		}
     }
 
     public void Log([StringSyntax(StringSyntaxAttribute.CompositeFormat)] MessageLevel level, string format, params object?[] args)
@@ -123,12 +135,23 @@ public class Logger(bool closeWriterOnDispose = false) : ILogger
         var file = Path.GetFileName(frame?.GetFileName()) ?? "unknown file";
         var line = frame?.GetFileLineNumber() ?? 0;
 
-        if (level == MessageLevel.Debug)
+		switch (level)
+		{
+		case MessageLevel.Debug:
             Debug.WriteLine(FormatMessage(level, DateTime.Now,
             file, line, string.Format(format, args)));
-        else
+			break;
+		case MessageLevel.Err:
+		case MessageLevel.Crit:
+		case MessageLevel.Fatal:
+			ErrWriter.WriteLine(FormatMessage(level, DateTime.Now,
+            file, line, string.Format(format, args)));
+			break;
+        default:
             OutputWriter.WriteLine(FormatMessage(level, DateTime.Now,
             file, line, string.Format(format, args)));
+			break;
+		}
     }
 
     protected virtual void Dispose(bool disposing)

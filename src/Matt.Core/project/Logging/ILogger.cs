@@ -6,6 +6,7 @@ namespace Matt.Logging;
 public interface ILogger : IDisposable
 {
     TextWriter OutputWriter { get; }
+    TextWriter ErrWriter { get; }
 
     void Log(string message);
     void Log(string format, params object?[] args);
