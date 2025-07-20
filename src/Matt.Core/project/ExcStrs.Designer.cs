@@ -61,6 +61,15 @@ namespace Matt {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The searched file &quot;{0}&quot; doesn&apos;t exist..
+        /// </summary>
+        internal static string Validation_FileDoesNotExist {
+            get {
+                return ResourceManager.GetString("Validation_FileDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The value &quot;{0}&quot; must not be null or an empty string..
         /// </summary>
         internal static string Validation_ValueMustNotBeNull {

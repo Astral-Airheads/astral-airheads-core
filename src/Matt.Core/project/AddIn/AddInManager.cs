@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
-using Matt.Util;
+using Matt.Validation;
 
 namespace Matt.AddIn;
 
@@ -37,23 +37,23 @@ public class AddInManager : IDisposable
 
     public void LoadAddInFromFile(string dllPath)
     {
-        FileUtility.ThrowIfFileNotExist(dllPath);
+        Requires.FileExists(dllPath);
         var dll = Assembly.LoadFrom(dllPath);
-        ArgumentNullException.ThrowIfNull(dll);
+        Requires.NotNull(dll);
 
         var type = dll.GetTypes()
             .First(t => 
             typeof(IAddInBase).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract);
 
         var addin = Activator.CreateInstance(type) as IAddInBase;
-        ArgumentNullException.ThrowIfNull(addin);
+        Requires.NotNull(addin);
 
         LoadAddIn(addin);
     }
 
     public void LoadAddIn(IAddInBase addin)
     {
-        ArgumentNullException.ThrowIfNull(addin);
+        Requires.NotNull(addin);
 
         if (!addin.Initialize())
             throw new AddInException($"Add-in \"{addin.Name}\" failed to initialize!");
@@ -63,7 +63,7 @@ public class AddInManager : IDisposable
 
     public void UnloadAddIn(IAddInBase addin)
     {
-        ArgumentNullException.ThrowIfNull(addin);
+        Requires.NotNull(addin);
 
         if (!_addins.Contains(addin))
             return;

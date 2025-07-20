@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Matt.Validation;
@@ -14,6 +16,7 @@ public sealed class Requires
     /// <param name="value">The value of the object.</param>
     /// <param name="paramName">The value of the object's name.</param>
     /// <exception cref="ArgumentNullException">Throws when the object is returned as null.</exception>
+    [DebuggerStepThrough]
     public static void NotNull([NotNull] object? value, string? paramName = null)
     {
         if (value != null) return;
@@ -120,5 +123,19 @@ public sealed class Requires
 
         throw new ArgumentNullException(value ?? nameof(value),
             string.Format(ExcStrs.Validation_ValueMustNotBeNull, paramName ?? nameof(value)));
+    }
+
+    /// <summary>
+    /// Throws an exception if the specified file doesn't exist.
+    /// </summary>
+    /// <param name="filePath">The value of the file path.</param>
+    /// <param name="fileName">The value of the file name.</param>
+    /// <exception cref="FileNotFoundException">Throws when the file doesn't exist.</exception>
+    public static void FileExists(string filePath, string? fileName = null)
+    {
+        if (File.Exists(filePath)) return;
+
+        throw new FileNotFoundException(
+            string.Format(ExcStrs.Validation_FileDoesNotExist, fileName ?? Path.GetFileName(filePath)));
     }
 }
