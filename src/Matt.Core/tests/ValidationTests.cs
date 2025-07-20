@@ -28,7 +28,7 @@ public class ValidationTests
 
         // Act & Assert
         var exception = Assert.Throws<ArgumentNullException>(() => Requires.NotNull(obj));
-        Assert.Equal("obj", exception.ParamName);
+        Assert.Equal("value", exception.ParamName);
     }
 
     [Fact]
@@ -144,7 +144,7 @@ public class ValidationTests
 
         // Act & Assert
         var exception = Assert.Throws<ArgumentNullException>(() => Requires.NotNull(ptr));
-        Assert.Equal("ptr", exception.ParamName);
+        Assert.Equal("value", exception.ParamName);
     }
 
     #endregion
@@ -196,7 +196,7 @@ public class ValidationTests
 
         // Act & Assert
         var exception = Assert.Throws<ArgumentNullException>(() => Requires.NotNull(obj));
-        Assert.Equal("obj", exception.ParamName);
+        Assert.Equal("value", exception.ParamName);
     }
 
     #endregion

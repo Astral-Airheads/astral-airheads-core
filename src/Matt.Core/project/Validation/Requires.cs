@@ -127,7 +127,7 @@ public sealed class Requires
 
         if (!string.IsNullOrWhiteSpace(value)) return;
 
-        throw new ArgumentNullException(value ?? nameof(value),
+        throw new ArgumentNullException(paramName ?? nameof(value),
             string.Format(ExcStrs.Validation_ValueMustNotBeNull, paramName ?? nameof(value)));
     }
 
