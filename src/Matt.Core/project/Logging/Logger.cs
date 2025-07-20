@@ -14,30 +14,76 @@ public class Logger(bool closeWriterOnDispose = false) : ILogger
 	public TextWriter ErrWriter => Console.Error;
 
     public void LogDebug(string message) => Log(MessageLevel.Debug, message);
+    public void LogDebug([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format,
+        object? arg0) => Log(format, arg0);
+    public void LogDebug([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format,
+        object? arg0, object? arg1) => Log(format, arg0, arg1);
+    public void LogDebug([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format,
+        object? arg0, object? arg1, object? arg2) => Log(format, arg0, arg1, arg2);
     public void LogDebug([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format, params object?[] args) =>
         Log(MessageLevel.Debug, format, args);
 
     public void LogInfo(string message) => Log(message);
+    public void LogInfo([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format,
+        object? arg0) => Log(format, arg0);
+    public void LogInfo([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format,
+        object? arg0, object? arg1) => Log(format, arg0, arg1);
+    public void LogInfo([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format,
+        object? arg0, object? arg1, object? arg2) => Log(format, arg0, arg1, arg2);
     public void LogInfo([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format, params object?[] args) =>
         Log(format, args);
 
     public void LogWarn(string message) => Log(MessageLevel.Warn, message);
+    public void LogWarn([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format,
+        object? arg0) => Log(format, arg0);
+    public void LogWarn([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format,
+        object? arg0, object? arg1) => Log(format, arg0, arg1);
+    public void LogWarn([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format,
+        object? arg0, object? arg1, object? arg2) => Log(format, arg0, arg1, arg2);
     public void LogWarn([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format, params object?[] args) =>
         Log(MessageLevel.Warn, format, args);
 
     public void LogErr(string message) => Log(MessageLevel.Err, message);
+    public void LogErr([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format,
+        object? arg0) => Log(format, arg0);
+    public void LogErr([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format,
+        object? arg0, object? arg1) => Log(format, arg0, arg1);
+    public void LogErr([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format,
+        object? arg0, object? arg1, object? arg2) => Log(format, arg0, arg1, arg2);
     public void LogErr([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format, params object?[] args) =>
         Log(MessageLevel.Err, format, args);
 
     public void LogCrit(string message) => Log(MessageLevel.Crit, message);
+    public void LogCrit([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format,
+        object? arg0) => Log(format, arg0);
+    public void LogCrit([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format,
+        object? arg0, object? arg1) => Log(format, arg0, arg1);
+    public void LogCrit([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format,
+        object? arg0, object? arg1, object? arg2) => Log(format, arg0, arg1, arg2);
     public void LogCrit([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format, params object?[] args) =>
         Log(MessageLevel.Crit, format, args);
 
     public void LogFatal(string message) => Log(MessageLevel.Fatal, message);
+    public void LogFatal([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format,
+        object? arg0) => Log(format, arg0);
+    public void LogFatal([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format,
+        object? arg0, object? arg1) => Log(format, arg0, arg1);
+    public void LogFatal([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format,
+        object? arg0, object? arg1, object? arg2) => Log(format, arg0, arg1, arg2);
     public void LogFatal([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format, params object?[] args) =>
         Log(MessageLevel.Fatal, format, args);
 
     public void Log(string message) => Log(MessageLevel.Info, message);
+
+    public void Log([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format, object? arg0) =>
+        Log(MessageLevel.Info, format, arg0);
+
+    public void Log([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format, object? arg0, object? arg1) =>
+        Log(MessageLevel.Info, format, arg0, arg1);
+
+    public void Log([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format, object? arg0, object? arg1,
+        object? arg2) =>
+        Log(MessageLevel.Info, format, arg0, arg2);
 
     public void Log([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format, params object?[] args) =>
         Log(MessageLevel.Info, format, args);
@@ -115,6 +161,15 @@ public class Logger(bool closeWriterOnDispose = false) : ILogger
 			break;
 		}
     }
+
+    public void Log([StringSyntax(StringSyntaxAttribute.CompositeFormat)] MessageLevel level, string format,
+        object? arg0) => Log(level, format, arg0);
+
+    public void Log([StringSyntax(StringSyntaxAttribute.CompositeFormat)] MessageLevel level, string format,
+        object? arg0, object? arg1) => Log(level, format, arg0, arg1);
+
+    public void Log([StringSyntax(StringSyntaxAttribute.CompositeFormat)] MessageLevel level, string format,
+        object? arg0, object? arg1, object? arg2) => Log(level, format, arg0, arg1, arg2);
 
     public void Log([StringSyntax(StringSyntaxAttribute.CompositeFormat)] MessageLevel level, string format, params object?[] args)
     {
