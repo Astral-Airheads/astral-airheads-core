@@ -31,6 +31,7 @@ public sealed class Requires
     /// <param name="value">The value of the object.</param>
     /// <param name="paramName">The value of the object's name.</param>
     /// <exception cref="ArgumentNullException">Throws when the object is returned as null.</exception>
+    [DebuggerStepThrough]
     public static void NotNull([NotNull] bool? value, string? paramName = null)
     {
         if (value != null) return;
@@ -45,6 +46,7 @@ public sealed class Requires
     /// <param name="value">The value of the object.</param>
     /// <param name="paramName">The value of the object's name.</param>
     /// <exception cref="ArgumentNullException">Throws when the object is returned as null.</exception>
+    [DebuggerStepThrough]
     public static void NotNull([NotNull] int? value, string? paramName = null)
     {
         if (value != null) return;
@@ -59,6 +61,7 @@ public sealed class Requires
     /// <param name="value">The value of the object.</param>
     /// <param name="paramName">The value of the object's name.</param>
     /// <exception cref="ArgumentNullException">Throws when the object is returned as null.</exception>
+    [DebuggerStepThrough]
     public static void NotNull([NotNull] float? value, string? paramName = null)
     {
         if (value != null) return;
@@ -73,6 +76,7 @@ public sealed class Requires
     /// <param name="value">The value of the object.</param>
     /// <param name="paramName">The value of the object's name.</param>
     /// <exception cref="ArgumentNullException">Throws when the pointer is <seealso cref="IntPtr.Zero"/>.</exception>
+    [DebuggerStepThrough]
     public static void NotNull([NotNull] IntPtr value, string? paramName = null)
     {
         if (value != IntPtr.Zero) return;
@@ -87,6 +91,7 @@ public sealed class Requires
     /// <param name="value">The value of the object.</param>
     /// <param name="paramName">The value of the object's name.</param>
     /// <exception cref="ArgumentNullException">Throws when the object is returned as null.</exception>
+    [DebuggerStepThrough]
     public static void NotNull([NotNull] string? value, string? paramName = null)
     {
         if (value != null) return;
@@ -101,6 +106,7 @@ public sealed class Requires
     /// <param name="value">The value of the object.</param>
     /// <param name="paramName">The value of the object's name.</param>
     /// <exception cref="ArgumentNullException">Throws when the object is returned as null.</exception>
+    [DebuggerStepThrough]
     public static void NotNull<T>([NotNull] T? value, string? paramName = null) where T : class, new()
     {
         if (value != null) return;
@@ -131,6 +137,7 @@ public sealed class Requires
     /// <param name="filePath">The value of the file path.</param>
     /// <param name="fileName">The value of the file name.</param>
     /// <exception cref="FileNotFoundException">Throws when the file doesn't exist.</exception>
+    [DebuggerStepThrough]
     public static void FileExists(string filePath, string? fileName = null)
     {
         if (File.Exists(filePath)) return;
