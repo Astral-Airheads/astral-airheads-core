@@ -8,6 +8,7 @@ public sealed class ObservableListTests
 {
     private readonly ObservableList<TextWriter> _observable = [];
 
+    #region Event Tests
     [Fact]
     public void ObservableList_DoesInvokeAddEvent()
     {
@@ -48,4 +49,5 @@ public sealed class ObservableListTests
         if (!doesInvokeRemoved)
             Assert.Fail("ItemRemoved event wasn't invoked!");
     }
+    #endregion
 }
