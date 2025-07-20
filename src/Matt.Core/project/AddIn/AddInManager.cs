@@ -79,7 +79,7 @@ public class AddInManager : IDisposable
         Requires.NotNull(addin);
 
         if (!addin.Initialize())
-            throw new AddInException($"Add-in \"{addin.Name}\" failed to initialize!");
+            throw new AddInException(string.Format(ExcStrs.AddIn_FailedToInitialize, addin.Name));
 
         _addins.Add(addin);
     }

@@ -61,6 +61,15 @@ namespace Matt {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add-in &quot;{0}&quot; failed to initialize!.
+        /// </summary>
+        internal static string AddIn_FailedToInitialize {
+            get {
+                return ResourceManager.GetString("AddIn_FailedToInitialize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The searched file &quot;{0}&quot; doesn&apos;t exist..
         /// </summary>
         internal static string Validation_FileDoesNotExist {
