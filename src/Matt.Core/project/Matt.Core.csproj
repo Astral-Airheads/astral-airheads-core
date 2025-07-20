@@ -10,4 +10,19 @@
 		<OutputPath>$(SolutionDir)\bin\$(Platform)</OutputPath>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <Compile Update="ExcStrs.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>ExcStrs.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="ExcStrs.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>ExcStrs.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	</ItemGroup>
+
 </Project>
