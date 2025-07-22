@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Threading;
 
 namespace Matt.Stupidity;
@@ -6,8 +8,16 @@ namespace Matt.Stupidity;
 /// <summary>
 /// A random Console utility, for fun. :D
 /// </summary>
+[Browsable(false)]
+[EditorBrowsable(EditorBrowsableState.Never)]
+[DebuggerStepThrough]
 public sealed class NotAConsoleUtil
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="delay"></param>
+    /// <param name="text"></param>
     public static void WriteLine(int delay, string text)
     {
         foreach (var i in text)
@@ -17,7 +27,12 @@ public sealed class NotAConsoleUtil
         }
     }
 
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="delay"></param>
+    /// <param name="format"></param>
+    /// <param name="args"></param>
     public static void WriteLine(int delay, string format, params object?[] args)
     {
         foreach (var i in string.Format(format, args))

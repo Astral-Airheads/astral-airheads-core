@@ -190,6 +190,8 @@ public class MultiTextWriter : TextWriter
         foreach (var writer in _writers)
             writer.Write(value);
     }
+
+    /// <inheritdoc/>
     public override void WriteLine()
     {
         foreach (var writer in _writers)

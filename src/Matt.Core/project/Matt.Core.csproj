@@ -9,6 +9,8 @@
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<Platforms>AnyCPU;x64;x86</Platforms>
 		<OutputPath>$(SolutionDir)\bin\$(Platform)</OutputPath>
+		<DocumentationFile>$(SolutionDir)\bin\$(Platform)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>

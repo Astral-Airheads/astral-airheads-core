@@ -22,7 +22,7 @@ namespace Matt.Logging;
 /// <item><description>Separate output streams for different message levels</description></item>
 /// </list>
 /// <para>
-/// Debug messages are written to <see cref="Debug.WriteLine"/>, while Error, Critical, and Fatal
+/// Debug messages are written to <seealso cref="Debug.WriteLine(string)"/>, while Error, Critical, and Fatal
 /// messages are written to the error stream. All other messages are written to the standard output stream.
 /// </para>
 /// </remarks>
