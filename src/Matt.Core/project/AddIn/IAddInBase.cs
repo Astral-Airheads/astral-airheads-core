@@ -18,6 +18,11 @@ public interface IAddInBase : IDisposable
     string Prefix { get; }
 
     /// <summary>
+    /// Author of the add-in.
+    /// </summary>
+    string Author { get; }
+
+    /// <summary>
     /// Optional description of the add-in.
     /// </summary>
     string Description { get; }

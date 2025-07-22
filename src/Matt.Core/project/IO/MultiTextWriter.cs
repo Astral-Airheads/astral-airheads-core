@@ -88,12 +88,14 @@ public class MultiTextWriter : TextWriter
             writer.Write(buffer, index, count);
     }
 
+#if NET8_0_OR_GREATER
     /// <inheritdoc/>
     public override void Write(ReadOnlySpan<char> buffer)
     {
         foreach (var writer in _writers)
             writer.Write(buffer);
     }
+#endif
 
     /// <inheritdoc/>
     public override void Write(int value)
@@ -145,12 +147,14 @@ public class MultiTextWriter : TextWriter
             writer.Write(value);
     }
 
+#if NET8_0_OR_GREATER
     /// <inheritdoc/>
     public override void Write(StringBuilder? value)
     {
         foreach (var writer in _writers)
             writer.Write(value);
     }
+#endif
 
     /// <inheritdoc/>
     public override void Write(long value)
@@ -213,12 +217,14 @@ public class MultiTextWriter : TextWriter
             writer.WriteLine(buffer, index, count);
     }
 
+#if NET8_0_OR_GREATER
     /// <inheritdoc/>
     public override void WriteLine(ReadOnlySpan<char> buffer)
     {
         foreach (var writer in _writers)
             writer.WriteLine(buffer);
     }
+#endif
 
     /// <inheritdoc/>
     public override void WriteLine(bool value)
@@ -283,12 +289,14 @@ public class MultiTextWriter : TextWriter
             writer.WriteLine(value);
     }
 
+#if NET8_0_OR_GREATER
     /// <inheritdoc/>
     public override void WriteLine(StringBuilder? value)
     {
         foreach (var writer in _writers)
             writer.WriteLine(value);
     }
+#endif
 
     /// <inheritdoc/>
     public override void WriteLine(object? value)
