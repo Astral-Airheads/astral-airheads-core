@@ -11,10 +11,8 @@ namespace Matt.Collections;
 /// <param name="itemType"></param>
 public class ItemAddedEventArgs(object itemType) : EventArgs
 {
-    private object _type = itemType;
-
     /// <summary>
     /// The current type added to the collection.
     /// </summary>
-    public object Type => _type;
+    public object Type => itemType;
 }
