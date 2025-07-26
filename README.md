@@ -1,6 +1,7 @@
-# Matt.Core
+# AstralAirheads.Core
 
-This is the main platform core library that all of my .NET projects uses.
+This is the main platform core library that every Astral Airhead 
+applications/projects uses if needed.
 
 > [!IMPORTANT]
 > Any help with adding or improving XML documentations to other classes will 

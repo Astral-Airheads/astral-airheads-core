@@ -1,0 +1,13 @@
+<Solution>
+	<Folder Name="/Solution Items/">
+		<File Path=".gitattributes" />
+		<File Path=".gitignore" />
+		<File Path="README.md" />
+	</Folder>
+	<Folder Name="/Main/">
+		<Project Path="src/AstralAirheads.Core/project/AstralAirheads.Core.csproj" />
+	</Folder>
+	<Folder Name="/Tests/">
+		<Project Path="src/AstralAirheads.Core/tests/AstralAirheads.Core.Tests.csproj" />
+	</Folder>
+</Solution>
