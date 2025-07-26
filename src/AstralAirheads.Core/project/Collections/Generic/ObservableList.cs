@@ -5,7 +5,7 @@ namespace AstralAirheads.Collections.Generic;
 
 /// <summary>
 /// An <seealso cref="List{T}"/> that invokes an event every time an item has been added to
-/// or removed from the collection.
+/// or removed from the collection. Dumb am I right?
 /// </summary>
 /// <typeparam name="T">The value of the item type.</typeparam>
 public class ObservableList<T> : List<T> where T : class

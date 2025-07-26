@@ -3,7 +3,7 @@
  * i dont want to fucking know why
  * i wanna know why i pasted this file where i couldve just stubbed the
  * shit out of this code.
- * why? has i ever?
+ * why? has i ever? welp its atleast better than nothing :shrug:
  */
 
 #if !NET8_0_OR_GREATER

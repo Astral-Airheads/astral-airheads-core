@@ -14,7 +14,7 @@ namespace AstralAirheads.Stupidity;
 public sealed class NotAConsoleUtil
 {
     /// <summary>
-    /// 
+    /// This is utterly fucking retarded LMAO.
     /// </summary>
     /// <param name="delay"></param>
     /// <param name="text"></param>
@@ -28,7 +28,7 @@ public sealed class NotAConsoleUtil
     }
 
     /// <summary>
-    /// 
+    /// This is utterly fucking retarded LMAO.
     /// </summary>
     /// <param name="delay"></param>
     /// <param name="format"></param>
