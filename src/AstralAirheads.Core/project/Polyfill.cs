@@ -1,4 +1,12 @@
-﻿#if !NET8_0_OR_GREATER
+﻿/* @imstilljustmatt
+ * i dont know why
+ * i dont want to fucking know why
+ * i wanna know why i pasted this file where i couldve just stubbed the
+ * shit out of this code.
+ * why? has i ever?
+ */
+
+#if !NET8_0_OR_GREATER
 namespace System.Diagnostics.CodeAnalysis
 {
     /// <summary>Specifies the syntax used in a string.</summary>
