@@ -13,6 +13,12 @@ namespace AstralAirheads.Logging;
 public interface ILogger : IDisposable
 {
     /// <summary>
+    /// Gets the minimum logging level.
+    /// </summary>
+    /// <value>The actual message level.</value>
+    MessageLevel MinimumLevel { get; }
+
+    /// <summary>
     /// Gets the text writer used for standard output messages.
     /// </summary>
     /// <value>The text writer for standard output.</value>

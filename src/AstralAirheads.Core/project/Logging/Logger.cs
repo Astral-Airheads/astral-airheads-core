@@ -26,9 +26,15 @@ namespace AstralAirheads.Logging;
 /// messages are written to the error stream. All other messages are written to the standard output stream.
 /// </para>
 /// </remarks>
-public class Logger(bool closeWriterOnDispose = false) : ILogger
+public class Logger(MessageLevel minimumLvl = MessageLevel.Info, bool closeWriterOnDispose = false) : ILogger
 {
     private bool _disposed;
+
+    /// <summary>
+    /// Gets the minimum logging level.
+    /// </summary>
+    /// <value>The actual message level.</value>
+    public MessageLevel MinimumLevel => minimumLvl;
 
     /// <summary>
     /// Gets the text writer used for standard output messages.
@@ -454,6 +460,9 @@ public class Logger(bool closeWriterOnDispose = false) : ILogger
     /// </remarks>
     public void Log(MessageLevel level, string message)
     {
+        if (!((int)level >= (int)minimumLvl))
+            return;
+
         var st = new StackTrace(true); // 'true' enables file info
         StackFrame? frame = null;
 
@@ -500,7 +509,7 @@ public class Logger(bool closeWriterOnDispose = false) : ILogger
     /// <exception cref="ArgumentException">Thrown when <paramref name="level"/> is not a valid <see cref="MessageLevel"/> value.</exception>
     /// <exception cref="FormatException">Thrown when the format string is invalid.</exception>
     public void Log([StringSyntax(StringSyntaxAttribute.CompositeFormat)] MessageLevel level, string format,
-        object? arg0) => Log(level, format, new object?[] { arg0 });
+        object? arg0) => Log(level, format, [arg0]);
 
     /// <summary>
     /// Logs a message at the specified level with two arguments.
@@ -513,7 +522,7 @@ public class Logger(bool closeWriterOnDispose = false) : ILogger
     /// <exception cref="ArgumentException">Thrown when <paramref name="level"/> is not a valid <see cref="MessageLevel"/> value.</exception>
     /// <exception cref="FormatException">Thrown when the format string is invalid.</exception>
     public void Log([StringSyntax(StringSyntaxAttribute.CompositeFormat)] MessageLevel level, string format,
-        object? arg0, object? arg1) => Log(level, format, new object?[] { arg0, arg1 });
+        object? arg0, object? arg1) => Log(level, format, [arg0, arg1]);
 
     /// <summary>
     /// Logs a message at the specified level with three arguments.
@@ -527,7 +536,7 @@ public class Logger(bool closeWriterOnDispose = false) : ILogger
     /// <exception cref="ArgumentException">Thrown when <paramref name="level"/> is not a valid <see cref="MessageLevel"/> value.</exception>
     /// <exception cref="FormatException">Thrown when the format string is invalid.</exception>
     public void Log([StringSyntax(StringSyntaxAttribute.CompositeFormat)] MessageLevel level, string format,
-        object? arg0, object? arg1, object? arg2) => Log(level, format, new object?[] { arg0, arg1, arg2 });
+        object? arg0, object? arg1, object? arg2) => Log(level, format, [arg0, arg1, arg2]);
 
     /// <summary>
     /// Logs a message at the specified level with multiple arguments.
@@ -544,6 +553,9 @@ public class Logger(bool closeWriterOnDispose = false) : ILogger
     /// </remarks>
     public void Log([StringSyntax(StringSyntaxAttribute.CompositeFormat)] MessageLevel level, string format, params object?[] args)
     {
+        if (!((int)level >= (int)minimumLvl))
+            return;
+
         var st = new StackTrace(true); // 'true' enables file info
         StackFrame? frame = null;
 
