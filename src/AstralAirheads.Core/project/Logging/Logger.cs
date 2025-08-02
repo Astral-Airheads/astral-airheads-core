@@ -26,7 +26,7 @@ namespace AstralAirheads.Logging;
 /// messages are written to the error stream. All other messages are written to the standard output stream.
 /// </para>
 /// </remarks>
-public class Logger(MessageLevel minimumLvl = MessageLevel.Info, bool closeWriterOnDispose = false) : ILogger
+public class Logger(LoggerSettings settings) : ILogger
 {
     private bool _disposed;
 
@@ -34,19 +34,49 @@ public class Logger(MessageLevel minimumLvl = MessageLevel.Info, bool closeWrite
     /// Gets the minimum logging level.
     /// </summary>
     /// <value>The actual message level.</value>
-    public MessageLevel MinimumLevel => minimumLvl;
+    public MessageLevel MinimumLevel => settings.MinimumLevel;
 
     /// <summary>
     /// Gets the text writer used for standard output messages.
     /// </summary>
     /// <value>The console output writer.</value>
-    public TextWriter OutputWriter => Console.Out;
+    public TextWriter OutputWriter 
+    { 
+        get
+        {
+            if (settings.StdOut.HasFlag(LoggerDestination.Console))
+                return Console.Out;
+            else if (settings.StdOut.HasFlag(LoggerDestination.Error))
+                return Console.Error;
+            else if (settings.StdOut.HasFlag(LoggerDestination.File))
+                return new StreamWriter(
+                    File.OpenWrite(AppDomain.CurrentDomain.BaseDirectory + "/" + settings.LogFileName))
+                { AutoFlush = true };
+
+            return Console.Out;
+        }
+    }
 
     /// <summary>
     /// Gets the text writer used for error output messages.
     /// </summary>
     /// <value>The console error writer.</value>
-    public TextWriter ErrWriter => Console.Error;
+    public TextWriter ErrWriter
+    {
+        get
+        {
+            if (settings.StdOut.HasFlag(LoggerDestination.Console))
+                return Console.Out;
+            else if (settings.StdOut.HasFlag(LoggerDestination.Error))
+                return Console.Error;
+            else if (settings.StdOut.HasFlag(LoggerDestination.File))
+                return new StreamWriter(
+                    File.OpenWrite(AppDomain.CurrentDomain.BaseDirectory + "/" + settings.LogFileName))
+                { AutoFlush = true };
+
+            return Console.Error;
+        }
+    }
 
     /// <summary>
     /// Logs a debug message.
@@ -460,7 +490,7 @@ public class Logger(MessageLevel minimumLvl = MessageLevel.Info, bool closeWrite
     /// </remarks>
     public void Log(MessageLevel level, string message)
     {
-        if (!((int)level >= (int)minimumLvl))
+        if (!((int)level >= (int)MinimumLevel))
             return;
 
         var st = new StackTrace(true); // 'true' enables file info
@@ -553,7 +583,7 @@ public class Logger(MessageLevel minimumLvl = MessageLevel.Info, bool closeWrite
     /// </remarks>
     public void Log([StringSyntax(StringSyntaxAttribute.CompositeFormat)] MessageLevel level, string format, params object?[] args)
     {
-        if (!((int)level >= (int)minimumLvl))
+        if (!((int)level >= (int)MinimumLevel))
             return;
 
         var st = new StackTrace(true); // 'true' enables file info
@@ -606,7 +636,7 @@ public class Logger(MessageLevel minimumLvl = MessageLevel.Info, bool closeWrite
         {
             if (disposing)
             {
-                if (closeWriterOnDispose)
+                if (settings.ShouldCloseWriterOnDispose)
                     OutputWriter.Close();
             }
             
