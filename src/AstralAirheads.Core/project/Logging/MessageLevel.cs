@@ -1,4 +1,7 @@
-﻿namespace AstralAirheads.Logging;
+﻿// Copyright (c) 2025 Matthew for the Astral Airheads, all rights reserved.
+// Licensed under the MIT/X11 license, license terms are applied here.
+
+namespace AstralAirheads.Logging;
 
 /// <summary>
 /// Defines the severity levels for log messages.

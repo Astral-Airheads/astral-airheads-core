@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) 2025 Matthew for the Astral Airheads, all rights reserved.
+// Licensed under the MIT/X11 license, license terms are applied here.
+
+using System;
 
 namespace AstralAirheads.Collections;
 

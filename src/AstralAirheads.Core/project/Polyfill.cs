@@ -1,10 +1,5 @@
-﻿/* @imstilljustmatt
- * i dont know why
- * i dont want to fucking know why
- * i wanna know why i pasted this file where i couldve just stubbed the
- * shit out of this code.
- * why? has i ever? welp its atleast better than nothing :shrug:
- */
+﻿// Copyright (c) 2025 Matthew for the Astral Airheads, all rights reserved.
+// Licensed under the MIT/X11 license, license terms are applied here.
 
 #if !NET8_0_OR_GREATER
 namespace System.Diagnostics.CodeAnalysis
