@@ -1,6 +1,6 @@
 # AstralAirheads.Core
 
-This is the main platform core library that every Astral Airhead 
+This is the main platform core library that every Astral Airheads 
 applications/projects uses if needed.
 
 > [!IMPORTANT]
