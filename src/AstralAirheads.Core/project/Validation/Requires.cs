@@ -132,6 +132,22 @@ public sealed class Requires
     }
 
     /// <summary>
+    /// Throws an exception if an string is null or empty.
+    /// </summary>
+    /// <param name="value">The value of the object.</param>
+    /// <param name="paramName">The value of the object's name.</param>
+    /// <exception cref="ArgumentNullException">Thrown when the string is null or an empty whitespace.</exception>
+    public static void NotNullOrEmpty([NotNull] string? value, string? paramName = null)
+    {
+        NotNull(value, nameof(value));
+
+        if (!string.IsNullOrEmpty(value)) return;
+
+        throw new ArgumentNullException(paramName ?? nameof(value),
+            string.Format(ExcStrs.Validation_ValueMustNotBeNull, paramName ?? nameof(value)));
+    }
+
+    /// <summary>
     /// Throws an exception if the specified file doesn't exist.
     /// </summary>
     /// <param name="filePath">The value of the file path.</param>
