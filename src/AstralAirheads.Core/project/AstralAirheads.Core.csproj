@@ -18,6 +18,7 @@
 		<Version>0.0.1</Version>
 		<Authors>imstilljustmatt</Authors>
 		<Company>Astral Airheads</Company>
+		<PackageIcon>icon.png</PackageIcon>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageTags>dumb;core;lib;base;free</PackageTags>
 		<RepositoryUrl>https://github.com/Astral-Airheads/astral-airheads-core</RepositoryUrl>
@@ -48,6 +49,7 @@
 
 	<ItemGroup>
 		<None Include="$(SolutionDir)\README.md" Pack="true" PackagePath="\" />
+		<None Include="$(SolutionDir)\icon.png" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 	<ItemGroup>
