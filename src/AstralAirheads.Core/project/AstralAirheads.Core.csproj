@@ -10,7 +10,25 @@
 		<Platforms>AnyCPU;x64;x86</Platforms>
 		<OutputPath>$(SolutionDir)\bin\$(Platform)</OutputPath>
 		<DocumentationFile>$(SolutionDir)\bin\$(Platform)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+		<AssemblyOriginatorKeyFile>$(SolutionDir)\src\AstralAirheads.Core.snk</AssemblyOriginatorKeyFile>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		
+		<!-- Required NuGet package information -->
+		<PackageId>$(MSBuildProjectName)</PackageId>
+		<Version>0.0.1</Version>
+		<Authors>imstilljustmatt</Authors>
+		<Company>Astral Airheads</Company>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageTags>dumb;core;lib;base;free</PackageTags>
+		<RepositoryUrl>https://github.com/Astral-Airheads/astral-airheads-core</RepositoryUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<Copyright>Copyright (c) 2025 Matthew for the Astral Airheads</Copyright>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -26,6 +44,10 @@
 			<Generator>ResXFileCodeGenerator</Generator>
 			<LastGenOutput>ExcStrs.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="$(SolutionDir)\README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 	<ItemGroup>
