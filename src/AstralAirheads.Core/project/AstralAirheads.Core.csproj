@@ -19,6 +19,20 @@
 		<Authors>imstilljustmatt</Authors>
 		<Company>Astral Airheads</Company>
 		<PackageIcon>icon.png</PackageIcon>
+		<PackageDescription>
+			This is the main platform core library that every Astral Airheads 
+			applications/projects uses if needed.
+		</PackageDescription>
+		<PackageReleaseNotes>
+			=========== v0.0.1 ===========
+			This is the first release of the library to the official NuGet repository.
+			All you gotta need to know is we have:
+			- Logging (of course)
+			- An random observable "List{T}"
+			- An "ConcurrentBag" that can remove items from the collection
+			- Basic validation methods
+			- Some others that i'm too lazy to add into this list.
+		</PackageReleaseNotes>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageTags>dumb;core;lib;base;free</PackageTags>
 		<RepositoryUrl>https://github.com/Astral-Airheads/astral-airheads-core</RepositoryUrl>
