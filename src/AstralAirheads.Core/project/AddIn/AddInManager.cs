@@ -6,6 +6,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 using AstralAirheads.Validation;
+using AstralAirheads.Logging;
 
 namespace AstralAirheads.AddIn;
 
@@ -16,6 +17,7 @@ public class AddInManager : IDisposable
 {
     private bool _disposed = false;
     private readonly List<IAddInBase> _addins = [];
+	private readonly Logger _logger = new(LoggerSettings.Default);
 
     /// <summary>
     /// Gets an loaded add-in by its name. (Not case-sensitive)
@@ -81,7 +83,12 @@ public class AddInManager : IDisposable
     {
         Requires.NotNull(addin);
 
-        if (!addin.Initialize())
+		if (_addins.Contains(addin))
+			throw new AddInException(string.Format(ExcStrs.AddIn_FailedToInitialize, addin.Name));
+
+		_logger.LogInfo("Loading add-in: {0}...", addin.Name);
+
+		if (!addin.Initialize())
             throw new AddInException(string.Format(ExcStrs.AddIn_FailedToInitialize, addin.Name));
 
         _addins.Add(addin);
@@ -97,6 +104,8 @@ public class AddInManager : IDisposable
 
         if (!_addins.Contains(addin))
             return;
+
+		_logger.LogInfo("Unloading add-in: {0}...", addin.Name);
 
         addin.Dispose();
         _addins.Remove(addin);
