@@ -338,6 +338,7 @@ public class MultiTextWriter : TextWriter
             writer.WriteLine(format, args);
     }
 
+
     /// <inheritdoc/>
     public override void Flush()
     {
