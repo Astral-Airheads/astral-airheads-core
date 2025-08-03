@@ -5,6 +5,8 @@ using System;
 using System.IO;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AstralAirheads.Validation;
 
@@ -148,6 +150,40 @@ public sealed class Requires
 
         throw new ArgumentNullException(paramName ?? nameof(value),
             string.Format(ExcStrs.Validation_ValueMustNotBeNull, paramName ?? nameof(value)));
+    }
+
+    /// <summary>
+    /// Throws an exception if an string is null or empty.
+    /// </summary>
+    /// <param name="values">The value of the object.</param>
+    /// <param name="paramName">The value of the object's name.</param>
+    /// <exception cref="ArgumentNullException">Thrown when the string is null or an empty whitespace.</exception>
+    public static void NotNullOrEmpty<T>([NotNull] IEnumerable<T>? values, string? paramName = null)
+    {
+        NotNull(values, nameof(values));
+
+		if (values.First() != null) return;
+
+		bool isEmpty;
+		if (values is ICollection<T> collection)
+		{
+			isEmpty = collection.Count == 0;
+		}
+		else if (values is IReadOnlyCollection<T> readOnlyCollection)
+		{
+			isEmpty = readOnlyCollection.Count == 0;
+		}
+		else
+		{
+			using IEnumerator<T> enumerator = values.GetEnumerator();
+			isEmpty = !enumerator.MoveNext();
+		}
+
+		if (isEmpty)
+		{
+			throw new ArgumentNullException(paramName ?? nameof(values),
+			string.Format(ExcStrs.Validation_ValueMustNotBeNull, paramName ?? nameof(values)));
+		}
     }
 
     /// <summary>
