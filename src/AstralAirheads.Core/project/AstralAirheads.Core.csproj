@@ -24,6 +24,17 @@
 			applications/projects uses if needed.
 		</PackageDescription>
 		<PackageReleaseNotes>
+			=========== v0.0.2 ===========
+			Sarap bogchi ko. Second release nanaman, kapagod.
+			So here are the new + updated features:
+			- Improve logger code that handles logging destinations
+			- Added colors to log messages
+			- Prevent AddInManager from adding and loading an existing add-in if it's already added
+			- Added the new "ObservableConcurrentBag{T}"
+			- Added "Requires.NotNullOrEmpty(string? value, string? paramName = null)"
+			- Added "Requires.NotNullOrEmpty(IEnumerable{T}? values, string? paramName = null)"
+			- New useless interface called "IInitializable"
+			
 			=========== v0.0.1 ===========
 			This is the first release of the library to the official NuGet repository.
 			All you gotta need to know is we have:
