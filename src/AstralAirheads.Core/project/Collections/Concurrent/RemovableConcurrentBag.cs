@@ -14,12 +14,19 @@ namespace AstralAirheads.Collections.Concurrent;
 /// </summary>
 public class RemovableConcurrentBag<T> : ConcurrentBag<T>
 {
+	// allow this to be overriden for no reason, maybe i could make use of this soon.
+	/// <inheritdoc cref="ConcurrentBag{T}.Add(T)"/>
+	public virtual new void Add(T item)
+	{
+		base.Add(item);
+	}
+
     /// <summary>
     /// Removes an item from the <seealso cref="ConcurrentBag{T}"/>.
     /// </summary>
     /// <param name="item">The value of the item.</param>
     /// <returns><see langword="true"/></returns>
-    public bool Remove(T item)
+    public virtual bool Remove(T item)
     {
         var naFoHahaha = false; // see if na-FO yung item sa list.
         var tempList = new List<T>();
