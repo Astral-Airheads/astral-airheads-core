@@ -2,10 +2,13 @@
 // Licensed under the MIT/X11 license, license terms are applied here.
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
+
+using AstralAirheads.IO;
 
 namespace AstralAirheads.Logging;
 
@@ -39,24 +42,35 @@ public class Logger(LoggerSettings settings) : ILogger
     /// <value>The actual message level.</value>
     public MessageLevel MinimumLevel => settings.MinimumLevel;
 
-    /// <summary>
-    /// Gets the text writer used for standard output messages.
-    /// </summary>
-    /// <value>The console output writer.</value>
-    public TextWriter OutputWriter 
+	/// <summary>
+	/// Gets or sets the console colors for different log levels.
+	/// </summary>
+	public Dictionary<MessageLevel, (ConsoleColor Foreground, ConsoleColor Background)> LogLevelColors { get; } = 
+		new()
+	{
+		{ MessageLevel.Info, (ConsoleColor.White, ConsoleColor.Black) },
+		{ MessageLevel.Warn, (ConsoleColor.Yellow, ConsoleColor.Black) },
+		{ MessageLevel.Err, (ConsoleColor.Red, ConsoleColor.Black) },
+		{ MessageLevel.Fatal, (ConsoleColor.White, ConsoleColor.Red) }
+	};
+
+	/// <summary>
+	/// Gets the text writer used for standard output messages.
+	/// </summary>
+	/// <value>The console output writer.</value>
+	public TextWriter OutputWriter 
     { 
         get
         {
-            if (settings.StdOut.HasFlag(LoggerDestination.Console))
-                return Console.Out;
-            else if (settings.StdOut.HasFlag(LoggerDestination.Error))
-                return Console.Error;
+			var writer = new MultiTextWriter(Console.Out);
+            if (settings.StdOut.HasFlag(LoggerDestination.Error))
+				writer.AddWriter(Console.Error);
             else if (settings.StdOut.HasFlag(LoggerDestination.File))
-                return new StreamWriter(
+				writer.AddWriter(new StreamWriter(
                     File.OpenWrite(AppDomain.CurrentDomain.BaseDirectory + "/" + settings.LogFileName))
-                { AutoFlush = true };
+                { AutoFlush = true });
 
-            return Console.Out;
+            return writer;
         }
     }
 
@@ -68,17 +82,16 @@ public class Logger(LoggerSettings settings) : ILogger
     {
         get
         {
-            if (settings.StdOut.HasFlag(LoggerDestination.Console))
-                return Console.Out;
-            else if (settings.StdOut.HasFlag(LoggerDestination.Error))
-                return Console.Error;
-            else if (settings.StdOut.HasFlag(LoggerDestination.File))
-                return new StreamWriter(
-                    File.OpenWrite(AppDomain.CurrentDomain.BaseDirectory + "/" + settings.LogFileName))
-                { AutoFlush = true };
+			var writer = new MultiTextWriter(Console.Error);
+			if (settings.StdOut.HasFlag(LoggerDestination.Console))
+				writer.AddWriter(Console.Out);
+			else if (settings.StdOut.HasFlag(LoggerDestination.File))
+				writer.AddWriter(new StreamWriter(
+					File.OpenWrite(AppDomain.CurrentDomain.BaseDirectory + "/" + settings.LogFileName))
+				{ AutoFlush = true });
 
-            return Console.Error;
-        }
+			return writer;
+		}
     }
 
     /// <summary>
@@ -396,7 +409,7 @@ public class Logger(LoggerSettings settings) : ILogger
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="format"/> is null.</exception>
     /// <exception cref="FormatException">Thrown when the format string is invalid.</exception>
     public void Log([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format, object? arg0) =>
-        Log(MessageLevel.Info, format, new object?[] { arg0 });
+        Log(MessageLevel.Info, format, [arg0]);
 
     /// <summary>
     /// Logs an informational message with two arguments.
@@ -407,7 +420,7 @@ public class Logger(LoggerSettings settings) : ILogger
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="format"/> is null.</exception>
     /// <exception cref="FormatException">Thrown when the format string is invalid.</exception>
     public void Log([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format, object? arg0, object? arg1) =>
-        Log(MessageLevel.Info, format, new object?[] { arg0, arg1 });
+        Log(MessageLevel.Info, format, [arg0, arg1]);
 
     /// <summary>
     /// Logs an informational message with three arguments.
@@ -420,7 +433,7 @@ public class Logger(LoggerSettings settings) : ILogger
     /// <exception cref="FormatException">Thrown when the format string is invalid.</exception>
     public void Log([StringSyntax(StringSyntaxAttribute.CompositeFormat)] string format, object? arg0, object? arg1,
         object? arg2) =>
-        Log(MessageLevel.Info, format, new object?[] { arg0, arg1, arg2 });
+        Log(MessageLevel.Info, format, [arg0, arg1, arg2]);
 
     /// <summary>
     /// Logs an informational message with multiple arguments.
@@ -513,22 +526,65 @@ public class Logger(LoggerSettings settings) : ILogger
         var file = Path.GetFileName(frame?.GetFileName()) ?? "unknown file";
         var line = frame?.GetFileLineNumber() ?? 0;
 
-        switch (level)
+		if (settings.Colors)
 		{
-		case MessageLevel.Debug:
-            Debug.WriteLine(FormatMessage(level, DateTime.Now,
-            file, line, message));
-			break;
-		case MessageLevel.Err:
-		case MessageLevel.Crit:
-		case MessageLevel.Fatal:
-            ErrWriter.WriteLine(FormatMessage(level, DateTime.Now,
-            file, line, message));
-			break;
-		default:
-            OutputWriter.WriteLine(FormatMessage(level, DateTime.Now,
-            file, line, message));
-			break;
+			var colors = LogLevelColors.ContainsKey(level)
+				? LogLevelColors[level]
+				: (ConsoleColor.White, ConsoleColor.Black);
+
+			var originalForeground = Console.ForegroundColor;
+			var originalBackground = Console.BackgroundColor;
+
+			try
+			{
+				Console.ForegroundColor = colors.Item1;
+				Console.BackgroundColor = colors.Item2;
+
+				switch (level)
+				{
+					case MessageLevel.Debug:
+						Debug.WriteLine(FormatMessage(level, DateTime.Now,
+						file, line, message));
+						break;
+					case MessageLevel.Err:
+					case MessageLevel.Crit:
+					case MessageLevel.Fatal:
+						ErrWriter.WriteLine(FormatMessage(level, DateTime.Now,
+						file, line, message));
+						break;
+					default:
+
+						OutputWriter.WriteLine(FormatMessage(level, DateTime.Now,
+						file, line, message));
+						break;
+				}
+			}
+			finally
+			{
+				Console.ForegroundColor = originalForeground;
+				Console.BackgroundColor = originalBackground;
+			}
+		}
+		else
+		{
+			switch (level)
+			{
+				case MessageLevel.Debug:
+					Debug.WriteLine(FormatMessage(level, DateTime.Now,
+					file, line, message));
+					break;
+				case MessageLevel.Err:
+				case MessageLevel.Crit:
+				case MessageLevel.Fatal:
+					ErrWriter.WriteLine(FormatMessage(level, DateTime.Now,
+					file, line, message));
+					break;
+				default:
+
+					OutputWriter.WriteLine(FormatMessage(level, DateTime.Now,
+					file, line, message));
+					break;
+			}
 		}
     }
 
@@ -571,59 +627,100 @@ public class Logger(LoggerSettings settings) : ILogger
     public void Log([StringSyntax(StringSyntaxAttribute.CompositeFormat)] MessageLevel level, string format,
         object? arg0, object? arg1, object? arg2) => Log(level, format, [arg0, arg1, arg2]);
 
-    /// <summary>
-    /// Logs a message at the specified level with multiple arguments.
-    /// </summary>
-    /// <param name="level">The message level.</param>
-    /// <param name="format">The format string.</param>
-    /// <param name="args">The arguments to format.</param>
-    /// <exception cref="ArgumentNullException">Thrown when <paramref name="format"/> or <paramref name="args"/> is null.</exception>
-    /// <exception cref="ArgumentException">Thrown when <paramref name="level"/> is not a valid <see cref="MessageLevel"/> value.</exception>
-    /// <exception cref="FormatException">Thrown when the format string is invalid.</exception>
-    /// <remarks>
-    /// This method analyzes the stack trace to find the calling method that is not part of the Logger class,
-    /// then formats and writes the message to the appropriate output stream based on the message level.
-    /// </remarks>
-    public void Log([StringSyntax(StringSyntaxAttribute.CompositeFormat)] MessageLevel level, string format, params object?[] args)
-    {
-        if (!((int)level >= (int)MinimumLevel))
-            return;
+	/// <summary>
+	/// Logs a message at the specified level with multiple arguments.
+	/// </summary>
+	/// <param name="level">The message level.</param>
+	/// <param name="format">The format string.</param>
+	/// <param name="args">The arguments to format.</param>
+	/// <exception cref="ArgumentNullException">Thrown when <paramref name="format"/> or <paramref name="args"/> is null.</exception>
+	/// <exception cref="ArgumentException">Thrown when <paramref name="level"/> is not a valid <see cref="MessageLevel"/> value.</exception>
+	/// <exception cref="FormatException">Thrown when the format string is invalid.</exception>
+	/// <remarks>
+	/// This method analyzes the stack trace to find the calling method that is not part of the Logger class,
+	/// then formats and writes the message to the appropriate output stream based on the message level.
+	/// </remarks>
+	public void Log([StringSyntax(StringSyntaxAttribute.CompositeFormat)] MessageLevel level, string format, params object?[] args)
+	{
+		if (!((int)level >= (int)MinimumLevel))
+			return;
 
-        var st = new StackTrace(true); // 'true' enables file info
-        StackFrame? frame = null;
+		var st = new StackTrace(true); // 'true' enables file info
+		StackFrame? frame = null;
 
-        for (int i = 1; i < st.FrameCount; i++)
-        {
-            var f = st.GetFrame(i);
-            var method = f?.GetMethod();
-            if (method?.DeclaringType != typeof(Logger))
-            {
-                frame = f;
-                break;
-            }
-        }
-
-        var file = Path.GetFileName(frame?.GetFileName()) ?? "unknown file";
-        var line = frame?.GetFileLineNumber() ?? 0;
-
-		switch (level)
+		for (int i = 1; i < st.FrameCount; i++)
 		{
-		case MessageLevel.Debug:
-            Debug.WriteLine(FormatMessage(level, DateTime.Now,
-            file, line, string.Format(format, args)));
-			break;
-		case MessageLevel.Err:
-		case MessageLevel.Crit:
-		case MessageLevel.Fatal:
-			ErrWriter.WriteLine(FormatMessage(level, DateTime.Now,
-            file, line, string.Format(format, args)));
-			break;
-        default:
-            OutputWriter.WriteLine(FormatMessage(level, DateTime.Now,
-            file, line, string.Format(format, args)));
-			break;
+			var f = st.GetFrame(i);
+			var method = f?.GetMethod();
+			if (method?.DeclaringType != typeof(Logger))
+			{
+				frame = f;
+				break;
+			}
 		}
-    }
+
+		var file = Path.GetFileName(frame?.GetFileName()) ?? "unknown file";
+		var line = frame?.GetFileLineNumber() ?? 0;
+
+		if (settings.Colors)
+		{
+			var colors = LogLevelColors.ContainsKey(level)
+					? LogLevelColors[level]
+					: (ConsoleColor.White, ConsoleColor.Black);
+
+			var originalForeground = Console.ForegroundColor;
+			var originalBackground = Console.BackgroundColor;
+
+			try
+			{
+				Console.ForegroundColor = colors.Item1;
+				Console.BackgroundColor = colors.Item2;
+
+				switch (level)
+				{
+					case MessageLevel.Debug:
+						Debug.WriteLine(FormatMessage(level, DateTime.Now,
+						file, line, string.Format(format, args)));
+						break;
+					case MessageLevel.Err:
+					case MessageLevel.Crit:
+					case MessageLevel.Fatal:
+						ErrWriter.WriteLine(FormatMessage(level, DateTime.Now,
+						file, line, string.Format(format, args)));
+						break;
+					default:
+						OutputWriter.WriteLine(FormatMessage(level, DateTime.Now,
+						file, line, string.Format(format, args)));
+						break;
+				}
+			}
+			finally
+			{
+				Console.ForegroundColor = originalForeground;
+				Console.BackgroundColor = originalBackground;
+			}
+		}
+		else
+		{
+			switch (level)
+			{
+				case MessageLevel.Debug:
+					Debug.WriteLine(FormatMessage(level, DateTime.Now,
+					file, line, string.Format(format, args)));
+					break;
+				case MessageLevel.Err:
+				case MessageLevel.Crit:
+				case MessageLevel.Fatal:
+					ErrWriter.WriteLine(FormatMessage(level, DateTime.Now,
+					file, line, string.Format(format, args)));
+					break;
+				default:
+					OutputWriter.WriteLine(FormatMessage(level, DateTime.Now,
+					file, line, string.Format(format, args)));
+					break;
+			}
+		}
+	}
 
     /// <summary>
     /// Releases the unmanaged resources used by the Logger and optionally releases the managed resources.
@@ -639,8 +736,12 @@ public class Logger(LoggerSettings settings) : ILogger
         {
             if (disposing)
             {
-                if (settings.ShouldCloseWriterOnDispose)
+                if (settings.ShouldCloseWriterOnDispose 
+					|| settings.StdOut.HasFlag(LoggerDestination.File))
                     OutputWriter.Close();
+                if (settings.ShouldCloseErrWriterOnDispose 
+					|| settings.StdErr.HasFlag(LoggerDestination.File))
+                    ErrWriter.Close();
             }
             
             _disposed = true;

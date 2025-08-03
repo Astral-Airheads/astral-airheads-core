@@ -12,17 +12,18 @@ namespace AstralAirheads.Logging;
 /// <param name="closeWriterOnDispose">Specifies whether to close the main output writer upon disposing the logger.</param>
 /// <param name="minLevel">The value of the minimum logger level.</param>
 /// <param name="logFileName">The value of the output file name.</param>
+/// <param name="enableColors">Specifies whether to enable log message colors.</param>
 public class LoggerSettings(LoggerDestination stdout, LoggerDestination stderr, 
     bool closeWriterOnDispose,
     MessageLevel minLevel,
-    string logFileName)
+    string logFileName, bool enableColors)
 {
     /// <summary>
     /// Default configuration for the logger.
     /// </summary>
-    public static LoggerSettings Default => 
+    public static readonly LoggerSettings Default = 
         new(LoggerDestination.Default, LoggerDestination.Error, 
-            false, MessageLevel.Info, "debug.log");
+            false, MessageLevel.Info, "debug.log", true);
 
     /// <summary>
     /// The file name of the logger output.
@@ -41,8 +42,20 @@ public class LoggerSettings(LoggerDestination stdout, LoggerDestination stderr,
 
     /// <summary>
     /// Specifies whether to close the output writer upon disposing the logger.
+	/// The only exception to this is when the destination is redirected to a log file.
     /// </summary>
     public bool ShouldCloseWriterOnDispose { get; set; } = closeWriterOnDispose;
+
+	/// <summary>
+	/// Specifies whether to close the error writer upon disposing the logger.
+	/// The only exception to this is when the destination is redirected to a log file.
+	/// </summary>
+	public bool ShouldCloseErrWriterOnDispose { get; set; } = closeWriterOnDispose;
+
+	/// <summary>
+	/// Specifies whether to enable color logging or not.
+	/// </summary>
+	public bool Colors { get; set; } = enableColors;
 
     /// <summary>
     /// The logger's minimum message level to be displayed.
