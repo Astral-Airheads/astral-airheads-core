@@ -6,3 +6,4 @@ applications/projects uses if needed.
 > [!IMPORTANT]
 > Any help with adding or improving XML documentations to other classes will 
 > be appreciated.
+> The analyzer needs testing also....

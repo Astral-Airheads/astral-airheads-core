@@ -8,6 +8,7 @@
 	</Folder>
 	<Folder Name="/Main/">
 		<Project Path="src/AstralAirheads.Core/project/AstralAirheads.Core.csproj" />
+		<Project Path="src/AstralAirheads.Core/analyzer/AstralAirheads.Core.Analyzer.csproj" />
 	</Folder>
 	<Folder Name="/Tests/">
 		<Project Path="src/AstralAirheads.Core/tests/AstralAirheads.Core.Tests.csproj" />
