@@ -16,7 +16,7 @@
 		
 		<!-- Required NuGet package information -->
 		<PackageId>$(MSBuildProjectName)</PackageId>
-		<Version>0.0.1</Version>
+		<Version>0.0.2</Version>
 		<Authors>imstilljustmatt</Authors>
 		<Company>Astral Airheads</Company>
 		<PackageIcon>icon.png</PackageIcon>
@@ -25,6 +25,9 @@
 			applications/projects uses if needed.
 		</PackageDescription>
 		<PackageReleaseNotes>
+			=========== v0.0.2 ===========
+			Second release, just to match the main core lib's version.
+			
 			=========== v0.0.1 ===========
 			This is the first release of the library to the official NuGet repository.
 			All you gotta need to know is we have:
