@@ -11,7 +11,7 @@ using System.Linq;
 namespace AstralAirheads.Validation;
 
 /// <summary>
-/// Just a typical validation class.
+/// Just a typical validation class. You can use this for assertion.
 /// </summary>
 public sealed class Requires
 {
@@ -242,4 +242,30 @@ public sealed class Requires
 
         throw new MustBeEqualException($"{typeof(T).Name} {nameof(actual)} must be equal to expected parameter: {nameof(expected)}.");
     }
+
+	/// <summary>
+	/// Throws an exception if the specified boolean is not equal to the value of <see langword="true"/>.
+	/// </summary>
+	/// <param name="condition">The value of the condition.</param>
+	/// <param name="paramName">The value of the object's name.</param>
+	public static void True(bool condition, string? paramName = null)
+	{
+		if (string.IsNullOrEmpty(paramName)) paramName = nameof(condition);
+		if (condition) return;
+
+		throw new ArgumentNullException(paramName, $"The condition {paramName} must return true.");
+	}
+
+	/// <summary>
+	/// Throws an exception if the specified boolean is not equal to the value of <see langword="false"/>.
+	/// </summary>
+	/// <param name="condition">The value of the condition.</param>
+	/// <param name="paramName">The value of the object's name.</param>
+	public static void False(bool condition, string? paramName = null)
+	{
+		if (string.IsNullOrEmpty(paramName)) paramName = nameof(condition);
+		if (!condition) return;
+
+		throw new ArgumentNullException(paramName, $"The condition {paramName} must return false.");
+	}
 }

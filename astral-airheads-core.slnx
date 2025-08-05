@@ -6,11 +6,25 @@
 		<File Path="LICENSE" />
 		<File Path="README.md" />
 	</Folder>
+	<Configurations>
+		<Platform Name="Any CPU" />
+		<Platform Name="x64" />
+		<Platform Name="x86" />
+	</Configurations>
 	<Folder Name="/Main/">
-		<Project Path="src/AstralAirheads.Core/project/AstralAirheads.Core.csproj" />
-		<Project Path="src/AstralAirheads.Core/analyzer/AstralAirheads.Core.Analyzer.csproj" />
+		<Project Path="src/AstralAirheads.Core/project/AstralAirheads.Core.csproj">
+			<Platform Solution="*|x64" Project="x64" />
+			<Platform Solution="*|x86" Project="x86" />
+		</Project>
+		<Project Path="src/AstralAirheads.Core/analyzer/AstralAirheads.Core.Analyzer.csproj">
+			<Platform Solution="*|x64" Project="x64" />
+			<Platform Solution="*|x86" Project="x86" />
+		</Project>
 	</Folder>
 	<Folder Name="/Tests/">
-		<Project Path="src/AstralAirheads.Core/tests/AstralAirheads.Core.Tests.csproj" />
+		<Project Path="src/AstralAirheads.Core/tests/AstralAirheads.Core.Tests.csproj">
+			<Platform Solution="*|x64" Project="x64" />
+			<Platform Solution="*|x86" Project="x86" />
+		</Project>
 	</Folder>
 </Solution>

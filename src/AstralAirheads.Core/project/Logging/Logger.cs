@@ -528,9 +528,9 @@ public class Logger(LoggerSettings settings) : ILogger
 
 		if (settings.Colors)
 		{
-			var colors = LogLevelColors.ContainsKey(level)
-				? LogLevelColors[level]
-				: (ConsoleColor.White, ConsoleColor.Black);
+			var colors = LogLevelColors.TryGetValue(level, 
+				out (ConsoleColor Foreground, ConsoleColor Background) value)
+				? value : (ConsoleColor.White, ConsoleColor.Black);
 
 			var originalForeground = Console.ForegroundColor;
 			var originalBackground = Console.BackgroundColor;
@@ -664,9 +664,9 @@ public class Logger(LoggerSettings settings) : ILogger
 
 		if (settings.Colors)
 		{
-			var colors = LogLevelColors.ContainsKey(level)
-					? LogLevelColors[level]
-					: (ConsoleColor.White, ConsoleColor.Black);
+			var colors = LogLevelColors.TryGetValue(level, 
+				out (ConsoleColor Foreground, ConsoleColor Background) value)
+					? value : (ConsoleColor.White, ConsoleColor.Black);
 
 			var originalForeground = Console.ForegroundColor;
 			var originalBackground = Console.BackgroundColor;

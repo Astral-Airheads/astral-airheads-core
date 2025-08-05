@@ -2,12 +2,15 @@
 // Licensed under the MIT/X11 license, license terms are applied here.
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Linq;
 using System.Text;
+#if NET8_0_OR_GREATER
+using System.Threading;
+#endif
+using System.Threading.Tasks;
 
 namespace AstralAirheads.IO;
 
@@ -19,7 +22,7 @@ public class MultiTextWriter : TextWriter
     /// <inheritdoc/>
     public override Encoding Encoding => Encoding.ASCII;
 
-    private IEnumerable<TextWriter> _writers;
+    private ConcurrentBag<TextWriter> _writers;
 
     /// <summary>
     /// Initializes a new <seealso cref="MultiTextWriter"/> without any initial writers.
@@ -34,7 +37,7 @@ public class MultiTextWriter : TextWriter
     /// </summary>
     public MultiTextWriter(params TextWriter[] writers)
     {
-        _writers = writers;
+        _writers = [..writers];
     }
 
     /// <summary>
@@ -42,7 +45,7 @@ public class MultiTextWriter : TextWriter
     /// </summary>
     public MultiTextWriter(IEnumerable<TextWriter> writers)
     {
-        _writers = writers;
+        _writers = [..writers];
     }
 
     /// <summary>
@@ -60,7 +63,7 @@ public class MultiTextWriter : TextWriter
     /// <param name="writer">The value of the writer.</param>
     public void AddWriter(TextWriter writer)
     {
-        _writers = _writers.Append(writer);
+        _writers.Add(writer);
     }
 
     /// <inheritdoc/>
@@ -173,8 +176,15 @@ public class MultiTextWriter : TextWriter
             writer.Write(value);
     }
 
-    /// <inheritdoc/>
-    public override void Write(float value)
+	/// <inheritdoc/>
+	public override void Write(uint value)
+	{
+		foreach (var writer in _writers)
+			writer.Write(value);
+	}
+
+	/// <inheritdoc/>
+	public override void Write(float value)
     {
         foreach (var writer in _writers)
             writer.Write(value);
@@ -346,10 +356,116 @@ public class MultiTextWriter : TextWriter
             writer.Flush();
     }
 
-    /// <inheritdoc/>
-    public override void Close()
+	/// <inheritdoc/>
+	public override async Task FlushAsync()
+	{
+		foreach (var writer in _writers)
+			await writer.FlushAsync();
+	}
+
+#if NET8_0_OR_GREATER
+	/// <inheritdoc/>
+	public override async Task WriteAsync(char value)
+	{
+		foreach (var writer in _writers)
+			await writer.WriteAsync(value);
+	}
+
+	/// <inheritdoc/>
+	public override async Task WriteAsync(StringBuilder? value, CancellationToken cancellationToken = default)
+	{
+		foreach (var writer in _writers)
+			await writer.WriteAsync(value, cancellationToken);
+	}
+
+	/// <inheritdoc/>
+	public override async Task WriteAsync(char[] buffer, int index, int count)
+	{
+		foreach (var writer in _writers)
+			await writer.WriteAsync(buffer, index, count);
+	}
+
+	/// <inheritdoc/>
+	public override async Task WriteAsync(ReadOnlyMemory<char> buffer, CancellationToken cancellationToken = default)
+	{
+		foreach (var writer in _writers)
+			await writer.WriteAsync(buffer, cancellationToken);
+	}
+
+	/// <inheritdoc/>
+	public override async Task WriteAsync(string? value)
+	{
+		foreach (var writer in _writers)
+			await writer.WriteAsync(value);
+	}
+
+	/// <inheritdoc/>
+	public override async Task WriteLineAsync()
+	{
+		foreach (var writer in _writers)
+			await writer.WriteLineAsync();
+	}
+
+	/// <inheritdoc/>
+	public override async Task WriteLineAsync(char value)
+	{
+		foreach (var writer in _writers)
+			await writer.WriteLineAsync(value);
+	}
+
+	/// <inheritdoc/>
+	public override async Task WriteLineAsync(string? value)
+	{
+		foreach (var writer in _writers)
+			await writer.WriteLineAsync(value);
+	}
+
+	/// <inheritdoc/>
+	public override async Task WriteLineAsync(StringBuilder? value, CancellationToken cancellationToken = default)
+	{
+		foreach (var writer in _writers)
+			await writer.WriteLineAsync(value, cancellationToken);
+	}
+
+	/// <inheritdoc/>
+	public override async Task WriteLineAsync(char[] buffer, int index, int count)
+	{
+		foreach (var writer in _writers)
+			await writer.WriteLineAsync(buffer, index, count);
+	}
+
+	/// <inheritdoc/>
+	public override async Task WriteLineAsync(ReadOnlyMemory<char> buffer, CancellationToken cancellationToken = default)
+	{
+		foreach (var writer in _writers)
+			await writer.WriteLineAsync(buffer, cancellationToken);
+	}
+
+	/// <inheritdoc/>
+	public override async Task FlushAsync(CancellationToken cancellationToken)
+	{
+		foreach (var writer in _writers)
+			await writer.FlushAsync(cancellationToken);
+	}
+
+	/// <inheritdoc/>
+	public override async ValueTask DisposeAsync()
+	{
+		foreach (var writer in _writers)
+			await writer.DisposeAsync();
+
+		_writers.Clear();
+
+		GC.SuppressFinalize(this);
+	}
+#endif
+
+	/// <inheritdoc/>
+	public override void Close()
     {
         foreach (var writer in _writers)
             writer.Close();
-    }
+
+		_writers.TryTake(out var _);
+	}
 }
