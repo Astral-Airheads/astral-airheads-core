@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 namespace AstralAirheads.Util.Benchmarking;
 
 /// <summary>
-/// 
+/// Basic performance measuring utility.
 /// </summary>
 public sealed class Measuring
 {
     /// <summary>
-    /// 
+    /// Measures execution time in milliseconds.
     /// </summary>
-    /// <param name="action"></param>
-    /// <param name="milliseconds"></param>
+    /// <param name="action">The value of the action to execute.</param>
+    /// <param name="milliseconds">The outputted estimated time (in milliseconds).</param>
     public static void MeasureExecutionTime(Action action, out long milliseconds)
     {
         var sw = new Stopwatch();
