@@ -124,6 +124,6 @@
     <value>The searched file "{0}" doesn't exist.</value>
   </data>
   <data name="Validation_ValueMustNotBeNull" xml:space="preserve">
-    <value>The value "{0}" must not be null or an empty string.</value>
+    <value>The value "{0}" must not be null or empty.</value>
   </data>
 </root>

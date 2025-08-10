@@ -79,7 +79,7 @@ namespace AstralAirheads {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The value &quot;{0}&quot; must not be null or an empty string..
+        ///   Looks up a localized string similar to The value &quot;{0}&quot; must not be null or empty..
         /// </summary>
         internal static string Validation_ValueMustNotBeNull {
             get {

@@ -23,7 +23,7 @@ public class CommandLineParser(char prefix, string[] args)
             parameter = prefix + parameter;
 
         // @imstilljustmatt:
-        // if you don't want to line more extra lines by using arg.Contains(string, StringComparison),
+        // if you don't want to add more extra lines by using arg.Contains(string, StringComparison),
 		// please remember that .NET Framework v4.7.2 doesn't have the StringComparison overload
 		// for "string.Contains()".
         parameter = parameter.ToLowerInvariant();
@@ -46,14 +46,14 @@ public class CommandLineParser(char prefix, string[] args)
             parameter = prefix + parameter;
 
 		// @imstilljustmatt:
-		// if you don't want to line more extra lines by using arg.Contains(string, StringComparison),
+		// if you don't want to add more extra lines by using arg.Contains(string, StringComparison),
 		// please remember that .NET Framework v4.7.2 doesn't have the StringComparison overload
 		// for "string.Contains()".
 		parameter = parameter.ToLowerInvariant();
 
         foreach (var arg in args)
             if (arg.Contains(parameter))
-                return arg.Substring(parameter.Length).Trim([':', '=', ' ']);
+                return arg.Substring(parameter.Length + 1);
 
         return null;
     }

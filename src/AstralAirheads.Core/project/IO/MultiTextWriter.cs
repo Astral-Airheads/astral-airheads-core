@@ -22,7 +22,7 @@ public class MultiTextWriter : TextWriter
     /// <inheritdoc/>
     public override Encoding Encoding => Encoding.ASCII;
 
-    private ConcurrentBag<TextWriter> _writers;
+    private readonly ConcurrentBag<TextWriter> _writers;
 
     /// <summary>
     /// Initializes a new <seealso cref="MultiTextWriter"/> without any initial writers.

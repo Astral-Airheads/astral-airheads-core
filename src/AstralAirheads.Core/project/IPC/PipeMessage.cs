@@ -17,8 +17,9 @@ public abstract class PipeMessage
     [JsonPropertyName("id")]
     public abstract int Id { get; set; }
 
-    /// <summary>
-    /// The actual value of the message.
-    /// </summary>
+	/// <summary>
+	/// The actual value of the message.
+	/// </summary>
+	[JsonPropertyName("msg")]
     public abstract string Message { get; set; }
 }

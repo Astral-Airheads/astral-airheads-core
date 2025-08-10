@@ -6,7 +6,7 @@ using System;
 namespace AstralAirheads.AddIn;
 
 /// <summary>
-/// Represents the base of the add-in that can be initialized or disposed by <seealso cref="AddInManager"/>.
+/// Represents the base of the add-in that can be initialized or disposed by <seealso cref="AddInManager{TInterface}"/>.
 /// </summary>
 public interface IAddInBase : IDisposable
 {

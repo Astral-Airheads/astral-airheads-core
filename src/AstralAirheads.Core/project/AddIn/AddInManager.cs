@@ -13,10 +13,11 @@ namespace AstralAirheads.AddIn;
 /// <summary>
 /// Just a simple add-in manager. :D
 /// </summary>
-public class AddInManager : IDisposable
+/// <typeparam name="TInterface">The value of the add-in interface to use.</typeparam>
+public class AddInManager<TInterface> : IDisposable where TInterface : class, IAddInBase
 {
     private bool _disposed = false;
-    private readonly List<IAddInBase> _addins = [];
+    private readonly List<TInterface> _addins = [];
 	private readonly Logger _logger = new(LoggerSettings.Default);
 
     /// <summary>
@@ -24,7 +25,7 @@ public class AddInManager : IDisposable
     /// </summary>
     /// <param name="name">The value of the add-in name to find.</param>
     /// <returns>The found add-in.</returns>
-    public IAddInBase? GetAddInFromName(string name)
+    public TInterface? GetAddInFromName(string name)
     {
         foreach (var addin in _addins)
         {
@@ -41,7 +42,7 @@ public class AddInManager : IDisposable
     /// </summary>
     /// <param name="prefix">The value of the add-in prefix to find.</param>
     /// <returns>The found add-in.</returns>
-    public IAddInBase? GetAddInFromPrefix(string prefix)
+    public TInterface? GetAddInFromPrefix(string prefix)
     {
         foreach (var addin in _addins)
         {
@@ -65,9 +66,9 @@ public class AddInManager : IDisposable
 
         var type = dll.GetTypes()
             .First(t => 
-            typeof(IAddInBase).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract);
+            typeof(TInterface).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract);
 
-        var addin = Activator.CreateInstance(type) as IAddInBase;
+        var addin = Activator.CreateInstance(type) as TInterface;
         Requires.NotNull(addin);
 
         LoadAddIn(addin);
@@ -79,7 +80,7 @@ public class AddInManager : IDisposable
     /// </summary>
     /// <param name="addin">The value of the add-in class.</param>
     /// <exception cref="AddInException">Thrown when an add-in failed to initialize.</exception>
-    public void LoadAddIn(IAddInBase addin)
+    public void LoadAddIn(TInterface addin)
     {
         Requires.NotNull(addin);
 
@@ -98,7 +99,8 @@ public class AddInManager : IDisposable
     /// Unloads an add-in if it's found from the loaded add-ins list.
     /// </summary>
     /// <param name="addin">The value of the add-in class.</param>
-    public void UnloadAddIn(IAddInBase addin)
+	/// <param name="disposing">Specifies if this is meant to be used in a Dispose method.</param>
+    public void UnloadAddIn(TInterface addin, bool disposing = false)
     {
         Requires.NotNull(addin);
 
@@ -108,7 +110,7 @@ public class AddInManager : IDisposable
 		_logger.LogInfo("Unloading add-in: {0}...", addin.Name);
 
         addin.Dispose();
-        _addins.Remove(addin);
+        if (!disposing) _addins.Remove(addin);
     }
 
     /// <summary>
@@ -122,8 +124,11 @@ public class AddInManager : IDisposable
             if (disposing)
             {
                 foreach (var addin in _addins)
-                    UnloadAddIn(addin);
+                    UnloadAddIn(addin, true);
             }
+
+			_addins.Clear();
+
             _disposed = true;
         }
     }

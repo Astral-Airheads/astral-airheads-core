@@ -1,4 +1,7 @@
 ﻿// Copyright (c) 2025 Matthew for the Astral Airheads, all rights reserved.
+// Copyright (c) 2025 Microsoft, all rights reserved.
+// Some existing validation methods are from the Microsoft.VisualStudio.Validation library.
+//=====================================================================================
 // Licensed under the MIT/X11 license, license terms are applied here.
 
 using System;
@@ -153,11 +156,11 @@ public sealed class Requires
     }
 
     /// <summary>
-    /// Throws an exception if an string is null or empty.
+    /// Throws an exception if an collection is null or empty.
     /// </summary>
     /// <param name="values">The value of the object.</param>
     /// <param name="paramName">The value of the object's name.</param>
-    /// <exception cref="ArgumentNullException">Thrown when the string is null or an empty whitespace.</exception>
+    /// <exception cref="ArgumentNullException">Thrown when the collection is null or an empty whitespace.</exception>
     public static void NotNullOrEmpty<T>([NotNull] IEnumerable<T>? values, string? paramName = null)
     {
         NotNull(values, nameof(values));
@@ -200,6 +203,108 @@ public sealed class Requires
         throw new FileNotFoundException(
             string.Format(ExcStrs.Validation_FileDoesNotExist, fileName ?? Path.GetFileName(filePath)));
     }
+
+	/// <summary>
+	/// Throws an exception if the specified <see langword="int"/> value is not in range in between
+	/// the specified minimum and maximum value.
+	/// </summary>
+	/// <param name="actual">The value of the actual value.</param>
+	/// <param name="min">The value of the minimum value.</param>
+	/// <param name="max">The value of the maximum value.</param>
+	/// <param name="paramName">The value of the object's name.</param>
+	[DebuggerStepThrough]
+	public static void MustBeInRange(int actual, int min, int max, string? paramName = null)
+	{
+		if (actual < max) return;
+		if (actual > min) return;
+
+		throw new ArgumentOutOfRangeException(paramName ?? nameof(actual));
+	}
+
+	/// <summary>
+	/// Throws an exception if the specified <see langword="float"/> value is not in range in between
+	/// the specified minimum and maximum value.
+	/// </summary>
+	/// <param name="actual">The value of the actual value.</param>
+	/// <param name="min">The value of the minimum value.</param>
+	/// <param name="max">The value of the maximum value.</param>
+	/// <param name="paramName">The value of the object's name.</param>
+	[DebuggerStepThrough]
+	public static void MustBeInRange(float actual, float min, float max, string? paramName = null)
+	{
+		if (actual < max) return;
+		if (actual > min) return;
+
+		throw new ArgumentOutOfRangeException(paramName ?? nameof(actual));
+	}
+
+	/// <summary>
+	/// Throws an exception if the specified <see langword="double"/> value is not in range in between
+	/// the specified minimum and maximum value.
+	/// </summary>
+	/// <param name="actual">The value of the actual value.</param>
+	/// <param name="min">The value of the minimum value.</param>
+	/// <param name="max">The value of the maximum value.</param>
+	/// <param name="paramName">The value of the object's name.</param>
+	[DebuggerStepThrough]
+	public static void MustBeInRange(double actual, double min, double max, string? paramName = null)
+	{
+		if (actual < max) return;
+		if (actual > min) return;
+
+		throw new ArgumentOutOfRangeException(paramName ?? nameof(actual));
+	}
+
+	/// <summary>
+	/// Throws an exception if the specified <see langword="long"/> value is not in range in between
+	/// the specified minimum and maximum value.
+	/// </summary>
+	/// <param name="actual">The value of the actual value.</param>
+	/// <param name="min">The value of the minimum value.</param>
+	/// <param name="max">The value of the maximum value.</param>
+	/// <param name="paramName">The value of the object's name.</param>
+	[DebuggerStepThrough]
+	public static void MustBeInRange(long actual, long min, long max, string? paramName = null)
+	{
+		if (actual < max) return;
+		if (actual > min) return;
+
+		throw new ArgumentOutOfRangeException(paramName ?? nameof(actual));
+	}
+
+	/// <summary>
+	/// Throws an exception if the specified <see langword="uint"/> value is not in range in between
+	/// the specified minimum and maximum value.
+	/// </summary>
+	/// <param name="actual">The value of the actual value.</param>
+	/// <param name="min">The value of the minimum value.</param>
+	/// <param name="max">The value of the maximum value.</param>
+	/// <param name="paramName">The value of the object's name.</param>
+	[DebuggerStepThrough]
+	public static void MustBeInRange(uint actual, uint min, uint max, string? paramName = null)
+	{
+		if (actual < max) return;
+		if (actual > min) return;
+
+		throw new ArgumentOutOfRangeException(paramName ?? nameof(actual));
+	}
+
+	/// <summary>
+	/// Throws an exception if the specified <see langword="nint"/> value is not in range in between
+	/// the specified minimum and maximum value.
+	/// </summary>
+	/// <param name="actual">The value of the actual value.</param>
+	/// <param name="min">The value of the minimum value.</param>
+	/// <param name="max">The value of the maximum value.</param>
+	/// <param name="paramName">The value of the object's name.</param>
+	[DebuggerStepThrough]
+	public static void MustBeInRange(nint actual, nint min, nint max, string? paramName = null)
+	{
+		if (actual < max) return;
+		if (actual > min) return;
+
+		throw new ArgumentOutOfRangeException(paramName ?? nameof(actual));
+	}
 
     /// <summary>
     /// Throws an exception if the specified objects are not equal to eachother.

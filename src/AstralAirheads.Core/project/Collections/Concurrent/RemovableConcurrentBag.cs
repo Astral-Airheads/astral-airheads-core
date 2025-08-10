@@ -41,6 +41,9 @@ public class RemovableConcurrentBag<T> : ConcurrentBag<T>
                 naFoHahaha = true; // oh no na-FO na sya, too bad!
         }
 
+		foreach (var removed in tempList)
+			Add(removed);
+
         return naFoHahaha;
     }
 }
