@@ -11,6 +11,7 @@
 		<OutputPath>$(SolutionDir)\bin\$(Platform)</OutputPath>
 		<DocumentationFile>$(SolutionDir)\bin\$(Platform)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
 		<AssemblyOriginatorKeyFile>$(SolutionDir)\src\AstralAirheads.Core.snk</AssemblyOriginatorKeyFile>
+		<SignAssembly>true</SignAssembly>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		
 		<!-- Required NuGet package information -->
