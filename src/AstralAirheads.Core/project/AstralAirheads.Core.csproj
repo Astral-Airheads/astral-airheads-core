@@ -27,6 +27,9 @@
 		<PackageReleaseNotes>
 			=========== v0.0.2 ===========
 			Sarap bogchi ko. Second release nanaman, kapagod.
+
+   Please note that I can't upload this to NuGet because my Microsoft account was locked for some odd reason and I can't request an appeal.
+
 			So here are the new + updated features:
 			- Improve logger code that handles logging destinations
 			- Added colors to log messages
@@ -35,6 +38,7 @@
 			- Added "Requires.NotNullOrEmpty(string? value, string? paramName = null)"
 			- Added "Requires.NotNullOrEmpty(IEnumerable{T}? values, string? paramName = null)"
 			- New useless interface called "IInitializable"
+   - Some random ass analyzer just to give a warning about "IInitializable"
 			
 			=========== v0.0.1 ===========
 			This is the first release of the library to the official NuGet repository.
